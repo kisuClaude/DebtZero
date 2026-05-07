@@ -1,6 +1,7 @@
 package com.chubeo.DebtZero.controller;
 
 import com.chubeo.DebtZero.dto.request.AuthenticationRequest;
+import com.chubeo.DebtZero.dto.request.RefreshTokenRequest;
 import com.chubeo.DebtZero.dto.response.ApiResponse;
 import com.chubeo.DebtZero.dto.response.AuthenticationResponse;
 import com.chubeo.DebtZero.service.AuthenticationService;
@@ -18,11 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
     AuthenticationService authenticationService;
-
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> userLogin(@RequestBody AuthenticationRequest authenticationRequest){
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.authenticate(authenticationRequest))
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request){
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(authenticationService.refresh(request))
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<Void> userLogout(@RequestBody RefreshTokenRequest request){
+        authenticationService.logout(request.getRefreshToken());
+        return ApiResponse.<Void>builder()
+                .message("Logout successfully")
                 .build();
     }
 }

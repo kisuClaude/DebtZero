@@ -14,3 +14,4 @@ spring:
 jwt:
   secret: "4ahvaJOzeCZyBLM5ko2RLb45tyC3jEJQyS3BYrj5HGM"
   expiration: 604800000
+  refresh-exipration: 604800000

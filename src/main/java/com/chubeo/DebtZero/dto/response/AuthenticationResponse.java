@@ -1,5 +1,6 @@
 package com.chubeo.DebtZero.dto.response;
 
+import com.chubeo.DebtZero.entity.RefreshToken;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,4 +11,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationResponse {
     String token;
+    String refreshToken;
 }
