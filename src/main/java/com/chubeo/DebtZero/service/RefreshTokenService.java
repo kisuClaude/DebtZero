@@ -59,7 +59,6 @@ public class RefreshTokenService {
     }
 
     public RefreshToken findByToken(String token){
-        System.out.println("🔥 FINDING TOKEN: [" + token + "]");
         return refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new AppException(ErrorCode.TOKEN_NOT_FOUND));
     }

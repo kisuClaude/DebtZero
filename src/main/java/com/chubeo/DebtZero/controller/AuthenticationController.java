@@ -26,7 +26,7 @@ public class AuthenticationController {
                 .build();
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/refresh-token")
     public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request){
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.refresh(request))
