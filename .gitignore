@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Config files
+application.properties
+application.yml
+application.yaml
+docker-compose.yml
+docker-compose.yaml

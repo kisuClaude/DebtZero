@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @EnableJpaAuditing
@@ -41,6 +42,14 @@ public class User {
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    Set<Role> roles;
 
     @PrePersist
     protected void onCreate(){

@@ -13,7 +13,10 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005,"User not existed",HttpStatus.NOT_FOUND),
 
     TOKEN_EXPIRED(2001, "Token has expired", HttpStatus.BAD_REQUEST),
-    TOKEN_NOT_FOUND(2002, "Token not found", HttpStatus.BAD_REQUEST),
+    TOKEN_NOT_FOUND(2002, "Token not found", HttpStatus.NOT_FOUND),
+    INVALID_CREDENTIALS(2003, "Invalid token", HttpStatus.BAD_REQUEST),
+
+    ROLE_NOT_FOUND(3001, "Role not found", HttpStatus.NOT_FOUND)
 
 
 

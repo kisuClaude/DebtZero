@@ -15,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +45,10 @@ public class AuthenticationService {
             String accessToken = jwtTokenProvider.generateToken(userDetails);
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUser());
             return new AuthenticationResponse(accessToken, refreshToken.getToken());
-        } catch (Exception e){
-            throw new RuntimeException("Invalid username or password");
+        } catch (BadCredentialsException e){
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS);
+        } catch (UsernameNotFoundException e){
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
         }
     }
 

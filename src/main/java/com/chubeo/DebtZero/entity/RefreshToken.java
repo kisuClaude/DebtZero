@@ -2,7 +2,6 @@ package com.chubeo.DebtZero.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.Instant;
 import java.util.UUID;

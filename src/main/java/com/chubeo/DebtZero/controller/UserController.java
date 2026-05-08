@@ -7,11 +7,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import com.chubeo.DebtZero.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -28,5 +28,11 @@ public class UserController {
                 .build();
     }
 
-
+    @GetMapping("get-users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<List<UserCreationResponse>> getAllUsers(){
+        return ApiResponse.<List<UserCreationResponse>>builder()
+                .result(userService.getAllUsers())
+                .build();
+    }
 }
