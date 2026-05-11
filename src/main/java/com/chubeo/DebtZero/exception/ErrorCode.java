@@ -16,7 +16,9 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND(2002, "Token not found", HttpStatus.NOT_FOUND),
     INVALID_CREDENTIALS(2003, "Invalid token", HttpStatus.BAD_REQUEST),
 
-    ROLE_NOT_FOUND(3001, "Role not found", HttpStatus.NOT_FOUND)
+    ROLE_NOT_FOUND(3001, "Role not found", HttpStatus.NOT_FOUND),
+
+    DEBT_NOT_FOUND(4001, "Debt not found or you are not in debt", HttpStatus.NOT_FOUND)
 
 
 
