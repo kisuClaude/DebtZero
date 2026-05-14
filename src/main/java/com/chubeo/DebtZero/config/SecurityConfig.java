@@ -33,6 +33,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/create-user").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/debt/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
