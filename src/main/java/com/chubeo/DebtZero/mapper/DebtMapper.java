@@ -8,8 +8,13 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface DebtMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "remainingBalance", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     Debt toDebt(CreateDebtRequest request);
 
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "annualInterestRate", ignore = true)
     @Mapping(target = "riskLevel", ignore = true)
     @Mapping(target = "excessRate", ignore = true)

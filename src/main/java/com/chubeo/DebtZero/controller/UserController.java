@@ -3,6 +3,7 @@ package com.chubeo.DebtZero.controller;
 import com.chubeo.DebtZero.dto.request.UserCreationRequest;
 import com.chubeo.DebtZero.dto.response.ApiResponse;
 import com.chubeo.DebtZero.dto.response.UserCreationResponse;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/create-user")
-    public ApiResponse<UserCreationResponse> createUser(@RequestBody UserCreationRequest request){
+    public ApiResponse<UserCreationResponse> createUser(@Valid @RequestBody UserCreationRequest request){
         return ApiResponse.<UserCreationResponse>builder()
                 .message("Create user successfully")
                 .result(userService.createUser(request))

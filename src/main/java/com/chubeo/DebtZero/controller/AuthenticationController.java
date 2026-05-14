@@ -5,6 +5,7 @@ import com.chubeo.DebtZero.dto.request.RefreshTokenRequest;
 import com.chubeo.DebtZero.dto.response.ApiResponse;
 import com.chubeo.DebtZero.dto.response.AuthenticationResponse;
 import com.chubeo.DebtZero.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     AuthenticationService authenticationService;
     @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> userLogin(@RequestBody AuthenticationRequest authenticationRequest){
+    public ApiResponse<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest authenticationRequest){
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.authenticate(authenticationRequest))
                 .build();

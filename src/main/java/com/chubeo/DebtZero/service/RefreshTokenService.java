@@ -23,7 +23,7 @@ import java.util.UUID;
 public class RefreshTokenService {
 
     @NonFinal
-    @Value("${jwt.refresh-exipration}")
+    @Value("${jwt.refresh-expiration}")
     Long refreshExpiration;
 
     RefreshTokenRepository refreshTokenRepository;

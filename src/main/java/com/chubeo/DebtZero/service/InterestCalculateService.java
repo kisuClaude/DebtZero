@@ -1,6 +1,7 @@
 package com.chubeo.DebtZero.service;
 
 import com.chubeo.DebtZero.enums.InterestInputType;
+import com.chubeo.DebtZero.enums.RiskLevel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,18 +26,18 @@ public class InterestCalculateService {
     }
 
 
-    public String getRiskLevel(BigDecimal annualRate){
-        String level;
+    public RiskLevel getRiskLevel(BigDecimal annualRate){
+        RiskLevel level;
         BigDecimal fifteen = new BigDecimal("15");
         BigDecimal thirty = new BigDecimal("30");
         BigDecimal sixty = new BigDecimal("60");
         if(annualRate.compareTo(fifteen) < 0){
-             level = "SAFE";
+             level = RiskLevel.SAFE;
         } else if(annualRate.compareTo(thirty) < 0){
-             level = "CAUTION";
+             level = RiskLevel.CAUTION;
         } else if(annualRate.compareTo(sixty) < 0) {
-             level = "HIGH";
-        } else  level = "DANGER";
+             level = RiskLevel.HIGH;
+        } else  level = RiskLevel.DANGER;
         return level;
     }
 
@@ -50,7 +51,8 @@ public class InterestCalculateService {
 
     private BigDecimal convertMonthlyPercent(BigDecimal value){
         return value
-                .multiply(new BigDecimal("12"));
+                .multiply(new BigDecimal("12"))
+                .setScale(4, RoundingMode.HALF_UP);
     }
 
     public BigDecimal compareWithBankRate(BigDecimal annualRate) {
@@ -60,6 +62,6 @@ public class InterestCalculateService {
 
         if (diff.compareTo(BigDecimal.ZERO) < 0) return BigDecimal.ZERO;
 
-        return diff;
+        return diff.setScale(4, RoundingMode.HALF_UP);
     }
 }

@@ -4,6 +4,7 @@ import com.chubeo.DebtZero.dto.request.CreateDebtRequest;
 import com.chubeo.DebtZero.dto.response.ApiResponse;
 import com.chubeo.DebtZero.dto.response.DebtResponse;
 import com.chubeo.DebtZero.service.DebtService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class DebtController {
     DebtService debtService;
 
     @PostMapping("/create")
-    public ApiResponse<DebtResponse> createDebt(@RequestBody CreateDebtRequest request){
+    public ApiResponse<DebtResponse> createDebt(@Valid @RequestBody CreateDebtRequest request){
         return ApiResponse.<DebtResponse>builder()
                 .result(debtService.createDebt(request))
                 .message("Create debt successfully")
@@ -49,6 +50,22 @@ public class DebtController {
         debtService.deleteDebt(debtId);
         return ApiResponse.<Void>builder()
                 .message("Delete debt successfully")
+                .build();
+    }
+
+    @GetMapping("/{debtId}")
+    public ApiResponse<DebtResponse> getDebtById(@PathVariable UUID debtId){
+        return ApiResponse.<DebtResponse>builder()
+                .result(debtService.getDebtById(debtId))
+                .message("Get debt successfully")
+                .build();
+    }
+
+    @GetMapping("/upcoming")
+    public ApiResponse<List<DebtResponse>> getUpComingPayment(){
+        return ApiResponse.<List<DebtResponse>>builder()
+                .result(debtService.getUpcomingPayments())
+                .message("All upcoming payment for debt")
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package com.chubeo.DebtZero.service;
 
 import com.chubeo.DebtZero.dto.request.CreateDebtRequest;
 import com.chubeo.DebtZero.dto.response.DebtResponse;
+import com.chubeo.DebtZero.dto.response.PaymentHistoryResponse;
 import com.chubeo.DebtZero.entity.Debt;
 import com.chubeo.DebtZero.entity.User;
 import com.chubeo.DebtZero.enums.DebtStatus;
@@ -17,6 +18,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,11 +30,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DebtService {
-    UserRepository userRepository;
     DebtRepository debtRepository;
     DebtMapper debtMapper;
     InterestCalculateService interestCalculateService;
     SecurityUtils securityUtils;
+
 
     public DebtResponse createDebt(CreateDebtRequest request){
         User user = securityUtils.getCurrentUser();
@@ -39,9 +43,9 @@ public class DebtService {
         debt.setUser(user);
         debt.setRemainingBalance(request.getPrincipalAmount());
 
-        debtRepository.save(debt);
+        Debt savedDebt = debtRepository.save(debt);
 
-        return enrichResponse(debt);
+        return enrichResponse(savedDebt);
     }
 
     public List<DebtResponse> getDebtsByUser(){
@@ -79,8 +83,28 @@ public class DebtService {
         return enrichResponse(debt);
     }
 
+    public List<DebtResponse> getUpcomingPayments() {
+        User user = securityUtils.getCurrentUser();
+        List<Debt> activeDebts = debtRepository.findAllByUserAndStatus(user, DebtStatus.ACTIVE);
 
-    private DebtResponse enrichResponse(Debt debt){
+        LocalDate today = LocalDate.now();
+        LocalDate in7Days = today.plusDays(7);
+
+        return activeDebts.stream()
+                .filter(debt -> {
+                    try {
+                        LocalDate dueDate = today.withDayOfMonth(debt.getDueDay());
+                        return !dueDate.isBefore(today) && !dueDate.isAfter(in7Days);
+                    } catch (DateTimeException e) {
+                        return false;
+                    }
+                })
+                .sorted(Comparator.comparingInt(Debt::getDueDay))
+                .map(this::enrichResponse)
+                .collect(Collectors.toList());
+    }
+
+    public DebtResponse enrichResponse(Debt debt){
         DebtResponse response = debtMapper.toDebtResponse(debt);
 
         BigDecimal annualRate = interestCalculateService
