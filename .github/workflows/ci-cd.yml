@@ -54,7 +54,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: test
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-        run: ./mvnw test
+        run: ./mvnw test -e
 
   build-and-push:
     name: Build & Push Docker Image
